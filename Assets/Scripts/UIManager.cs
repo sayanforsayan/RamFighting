@@ -4,25 +4,19 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+    [SerializeField] private Slider ramAHealth;
+    [SerializeField] private Slider ramBHealth;
+    [SerializeField] private TMP_Text winnerText;
 
-    public Slider ramAHealth;
-    public Slider ramBHealth;
-    public TMP_Text winnerText;
-    public GoatStats ramAStats;
-    public GoatStats ramBStats;
-
-    void Awake() => Instance = this;
-
-    public void UpdateHealthBars()
+    public void UpdateHealthBars(GoatStats ramAStats, GoatStats ramBStats)
     {
         ramAHealth.value = ramAStats.GetHealthPercent();
         ramBHealth.value = ramBStats.GetHealthPercent();
     }
 
-    public void ShowWinner(string winner)
+    public void ShowWinner(string player)
     {
-        winnerText.text = winner;
+        winnerText.text = "Winner: " + player;
         winnerText.gameObject.SetActive(true);
     }
 }

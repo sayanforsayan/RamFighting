@@ -1093,8 +1093,6 @@ MonoBehaviour:
   ramAHealth: {fileID: 966292569}
   ramBHealth: {fileID: 1748406028}
   winnerText: {fileID: 1407747454}
-  ramAStats: {fileID: 1244929223}
-  ramBStats: {fileID: 1863951863}
 --- !u!1 &1079522190
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,17 +2071,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad8b8866d1fbd4be8adc4608071e8938, type: 3}
---- !u!114 &1244929223 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8817511276290634180, guid: ad8b8866d1fbd4be8adc4608071e8938, type: 3}
-  m_PrefabInstance: {fileID: 1244929222}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd14ea194718b4e5d9190d6053b7f13a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1244929224 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9009520376127473044, guid: ad8b8866d1fbd4be8adc4608071e8938, type: 3}
@@ -2262,7 +2249,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ramA: {fileID: 1244929224}
   ramB: {fileID: 1863951869}
-  damagePopupPrefab: {fileID: 5838527502801825977, guid: 38acf434f019648cfbe5fbfd5417c5ba, type: 3}
+  damagePopup: {fileID: 579959665580558868, guid: 38acf434f019648cfbe5fbfd5417c5ba, type: 3}
+  ui: {fileID: 1036221605}
 --- !u!4 &1450544679
 Transform:
   m_ObjectHideFlags: 0
@@ -2505,17 +2493,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 298f70fceed2e4a2e9b0608a11e08242, type: 3}
---- !u!114 &1863951863 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6269594726553763333, guid: 298f70fceed2e4a2e9b0608a11e08242, type: 3}
-  m_PrefabInstance: {fileID: 1863951862}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd14ea194718b4e5d9190d6053b7f13a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1863951869 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 598549373119796474, guid: 298f70fceed2e4a2e9b0608a11e08242, type: 3}

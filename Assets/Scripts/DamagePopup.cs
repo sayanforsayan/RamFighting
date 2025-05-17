@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DamagePopup : MonoBehaviour
 {
-    public TextMeshPro textMesh;
+    [SerializeField] private TextMeshPro textMesh;
     private Vector3 moveDirection;
     private float speed = 1f;
     private Camera cam;

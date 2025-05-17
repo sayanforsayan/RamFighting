@@ -1,29 +1,29 @@
 using System.Collections;
 using UnityEngine;
-
+using System;
 public class RamFighter : MonoBehaviour
 {
+    public Action<int, RamFighter> ThrowResponse = delegate { };
     public string ramName;
-    public Animator animator;
+    [SerializeField] private Animator animator;
+    public Transform damagePopupPoint;
     public GoatStats stats;
     public RamFighter opponent;
-    public Transform damagePopupPoint;
 
     private float timer;
     private bool isFighting = true;
     private Rigidbody rb;
     private CapsuleCollider col;
-    private Vector3 camPos;
+
+    // For Two object only i take direct ref.. of opponent otherwise must be collision obj prefer
+
     void Start()
     {
         animator.applyRootMotion = false;
-
-        timer = Random.Range(1f, 2f);
-        camPos = Camera.main.transform.position;
-        // Add Rigidbody and CapsuleCollider for physics
+        timer = UnityEngine.Random.Range(1f, 2f);
         rb = gameObject.GetComponent<Rigidbody>();
-        if (rb == null) rb = gameObject.AddComponent<Rigidbody>();
-        rb.isKinematic = false; // Ensure physics works
+
+        rb.isKinematic = false; // physics works
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
 
@@ -43,17 +43,17 @@ public class RamFighter : MonoBehaviour
         if (timer <= 0f)
         {
             Attack();
-            timer = Random.Range(1.5f, 2.5f);
+            timer = UnityEngine.Random.Range(1.5f, 2.5f);
         }
     }
 
     void Attack()
     {
-        int baseDamage = Random.Range(10, 20);
-        bool isCritical = Random.value < 0.2f;
+        int baseDamage = UnityEngine.Random.Range(10, 20);
+        bool isCritical = UnityEngine.Random.value < 0.2f;
         if (isCritical) baseDamage *= 3;
 
-        int attackType = Random.Range(0, 2);
+        int attackType = UnityEngine.Random.Range(0, 2);
         string anim = attackType == 0 ? "Attack1" : "Attack2";
         animator.Play(anim);
 
@@ -61,11 +61,10 @@ public class RamFighter : MonoBehaviour
         Vector3 direction = (opponent.transform.position - transform.position).normalized;
         opponent.rb.AddForce(direction * 300f); // Adjust for punchiness
 
-        opponent.TakeDamage(baseDamage);
+        ThrowResponse?.Invoke(baseDamage, this);
 
-        // Return both fighters to original position after short delay
+        // Reset position after short delay
         StartCoroutine(ResetPositionAfterHit());
-        //opponent.StartCoroutine(opponent.ResetPositionAfterHit());
 
         // Check win/lose
         if (opponent.stats.health <= 0)
@@ -77,49 +76,34 @@ public class RamFighter : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int amount)
-    {
-        // Damage receiver loses health
-        stats.TakeDamage(amount);
-        UIManager.Instance.UpdateHealthBars();
-        GameManager.Instance.ShowDamage(damagePopupPoint.position, amount, Color.red, false); // false = no +
-
-        // Attacker gains health
-        if (opponent != null && opponent.stats.health > 0 && opponent.stats.health < opponent.stats.maxHealth)
-        {
-            opponent.stats.Heal(amount);
-            UIManager.Instance.UpdateHealthBars();
-            GameManager.Instance.ShowDamage(opponent.damagePopupPoint.position, amount, Color.green, true); // true = show +
-        }
-    }
-
-
     public void StopFighting()
     {
         isFighting = false;
         rb.linearVelocity = Vector3.zero;
     }
 
-
-
     void OnCollisionEnter(Collision collision)
     {
-
+        if (collision.gameObject.name == "Plane")
+        {
+            // Initially Shake Camera
+        }
     }
+
     IEnumerator ResetPositionAfterHit()
     {
         opponent.animator.Play("Combat_Stun");
         yield return new WaitForSeconds(0.5f); // Wait for knockback to settle
         if (isFighting && stats.health > 0)
         {
-            float fixedDistance = 1.5f; // desired distance between rams
+            float fixedDistance = 0.5f; // desired distance between rams
 
             // Compute direction and target position at fixed distance
             Vector3 dirToOpponent = (opponent.transform.position - transform.position).normalized;
-            Vector3 midPoint = (transform.position + opponent.transform.position) / 3f;
+            Vector3 midPoint = (transform.position + opponent.transform.position) / 2f;
 
             // Position this ram behind the midpoint
-            Vector3 targetPos = midPoint - dirToOpponent * (fixedDistance / 3f);
+            Vector3 targetPos = midPoint - dirToOpponent * (fixedDistance / 2f);
             targetPos.y = transform.position.y;
 
             // Smoothly move to target position
